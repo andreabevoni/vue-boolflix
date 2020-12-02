@@ -22,17 +22,27 @@
           <li>Titolo: {{movie.title}}</li>
           <li v-if="movie.title != movie.original_title">Titolo Originale: {{movie.original_title}}</li>
           <li>Lingua Originale: {{movie.original_language}}</li>
+
+          <!-- METODO 1 FUNZIONANTE MA SCRITTO POCO BENE -->
           <li>
             <!-- stampo un numero di stelle piene pari al voto trasformato in numero da 0 a 5 ed un numero di stelle vuote pari a 5 meno il voto-->
             <i v-for="star in voteStar(movie.vote_average)" class="fas fa-star"></i><i v-for="star in (5 - voteStar(movie.vote_average))" class="far fa-star"></i>
           </li>
 
+          <!-- METODO 1 SCRITTO BENE MA CHE GENERA LO SPAZIO VUOTO A SCHERMO -->
           <li>
             <!-- stampo un numero di stelle piene pari al voto trasformato in numero da 0 a 5-->
             <i v-for="star in voteStar(movie.vote_average)" class="fas fa-star"></i>
             <!-- stampo un numero di stelle vuote pari a 5 meno il voto -->
             <i v-for="star in (5 - voteStar(movie.vote_average))" class="far fa-star"></i>
           </li>
+
+          <!-- METODO 2 -->
+          <li>
+            <!-- stampo cinque stelle e ne coloro di giallo un numero pari al voto trasformato in numero da 0 a 5-->
+            <i v-for="(star, index) in 5" :class="index < voteStar(movie.vote_average) ? 'yellow' : ''" class="fas fa-star"></i>
+          </li>
+
         </ul>
       </div>
 
