@@ -21,7 +21,7 @@
         <ul v-for="movie in dbMovie">
           <li>Titolo: {{movie.title}}</li>
           <li v-if="movie.title != movie.original_title">Titolo Originale: {{movie.original_title}}</li>
-          <li>Lingua Originale: {{movie.original_language}}</li>
+          <li><img :src="'img/flags/' + movie.original_language +'.png'" @error="genericFlag"></li>
 
           <!-- METODO 1 FUNZIONANTE MA SCRITTO POCO BENE -->
           <li>
