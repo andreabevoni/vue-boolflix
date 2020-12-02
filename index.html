@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>BoolFlix</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
   </head>
@@ -21,7 +22,17 @@
           <li>Titolo: {{movie.title}}</li>
           <li v-if="movie.title != movie.original_title">Titolo Originale: {{movie.original_title}}</li>
           <li>Lingua Originale: {{movie.original_language}}</li>
-          <li>Voto: {{voteStar(movie.vote_average)}}</li>
+          <li>
+            <!-- stampo un numero di stelle piene pari al voto trasformato in numero da 0 a 5 ed un numero di stelle vuote pari a 5 meno il voto-->
+            <i v-for="star in voteStar(movie.vote_average)" class="fas fa-star"></i><i v-for="star in (5 - voteStar(movie.vote_average))" class="far fa-star"></i>
+          </li>
+
+          <li>
+            <!-- stampo un numero di stelle piene pari al voto trasformato in numero da 0 a 5-->
+            <i v-for="star in voteStar(movie.vote_average)" class="fas fa-star"></i>
+            <!-- stampo un numero di stelle vuote pari a 5 meno il voto -->
+            <i v-for="star in (5 - voteStar(movie.vote_average))" class="far fa-star"></i>
+          </li>
         </ul>
       </div>
 
