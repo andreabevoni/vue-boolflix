@@ -16,9 +16,14 @@
       <button @click="startSearch">Cerca</button>
 
       <!-- output stampa dei film trovati -->
-      <ul v-if="show && found">
-        <li v-for="movie in dbMovie">{{movie.title}} {{movie.original_title}} {{movie.original_language}} {{movie.vote_average}}</li>
-      </ul>
+      <div v-if="show && found">
+        <ul v-for="movie in dbMovie">
+          <li>Titolo: {{movie.title}}</li>
+          <li v-if="movie.title != movie.original_title">Titolo Originale: {{movie.original_title}}</li>
+          <li>Lingua Originale: {{movie.original_language}}</li>
+          <li>Media Voto: {{movie.vote_average}}</li>
+        </ul>
+      </div>
 
       <!-- output quando la ricerca é inconcludente -->
       <div v-else-if="show && !found">
