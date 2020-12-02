@@ -42,6 +42,10 @@ var app = new Vue({
       } else {
         this.show = false;
       }
+    },
+    // funzione che prende il voto di TMDB e lo ritorna sotto forma di numero da 0 a 5
+    voteStar: function(vote) {
+      return Math.round(vote / 2);
     }
   }
 });

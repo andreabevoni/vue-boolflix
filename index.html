@@ -21,7 +21,7 @@
           <li>Titolo: {{movie.title}}</li>
           <li v-if="movie.title != movie.original_title">Titolo Originale: {{movie.original_title}}</li>
           <li>Lingua Originale: {{movie.original_language}}</li>
-          <li>Media Voto: {{movie.vote_average}}</li>
+          <li>Voto: {{voteStar(movie.vote_average)}}</li>
         </ul>
       </div>
 
