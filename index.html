@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>BoolFlix</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+  </head>
+  <body>
+
+    <div id="root">
+
+      <input v-model="search">
+
+      <button @click="startSearch">Cerca</button>
+
+      <ul v-if="show">
+        <li v-for="movie in dbMovie">{{movie.title}} {{movie.original_title}} {{movie.original_language}} {{movie.vote_average}}</li>
+      </ul>
+      <div v-else>
+        Scrivi qualcosa e premi il bottone per cercare film nel database online.
+      </div>
+
+    </div>
+
+    <script type="text/javascript" src="js/script.js"></script>
+
+  </body>
+</html>
