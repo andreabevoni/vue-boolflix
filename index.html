@@ -15,9 +15,17 @@
 
       <button @click="startSearch">Cerca</button>
 
-      <ul v-if="show">
+      <!-- output stampa dei film trovati -->
+      <ul v-if="show && found">
         <li v-for="movie in dbMovie">{{movie.title}} {{movie.original_title}} {{movie.original_language}} {{movie.vote_average}}</li>
       </ul>
+
+      <!-- output quando la ricerca é inconcludente -->
+      <div v-else-if="show && !found">
+        Nessun film trovato. Prego effettuare una nuova ricerca.
+      </div>
+
+      <!-- output quando si preme il bottone ma non si ha scritto niente -->
       <div v-else>
         Scrivi qualcosa e premi il bottone per cercare film nel database online.
       </div>

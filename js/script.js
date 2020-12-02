@@ -14,6 +14,7 @@ var app = new Vue({
   data: {
     search: "",
     show: false,
+    found: true,
     dbMovie: []
   },
   methods: {
@@ -21,10 +22,16 @@ var app = new Vue({
     startSearch: function() {
       // alla pressione del bottone controllo se l'utente ha inserito una stringa per effettuare la ricerca
       if (this.search != "") {
-        this.show = true;
         axios.get(`${database}&query=${this.search}`)
         .then(result => {
-          this.dbMovie = result.data.results;
+          // controllo se l'array di ricerca é vuoto
+          if (result.data.results.length > 0) {
+            this.dbMovie = result.data.results;
+            this.found = true;
+          } else {
+            this.found = false;
+          }
+          this.show = true;
         });
       } else {
         this.show = false;
