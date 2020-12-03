@@ -3,8 +3,11 @@
   <head>
     <meta charset="utf-8">
     <title>BoolFlix</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
   </head>
@@ -12,22 +15,28 @@
 
     <div id="root">
 
-      <input v-model="search">
+      <header>
+        <div class="padding">
+          <span class="logo">BOOLFLIX</span>
+          <input v-model="search" @keyup="startSearch">
+        </div>
+      </header>
 
-      <button @click="startSearch">Cerca</button>
-
-      <ol>
-        <li v-for="movie in database">
-            <div><img :src="'http://image.tmdb.org/t/p/w342/' + movie.poster_path" @error="genericMovie"></div>
-            <div>Titolo: {{movie.title}} {{movie.name}}</div>
-            <div v-if="movie.title != movie.original_title || movie.name != movie.original_name">Titolo Originale: {{movie.original_title}} {{movie.name}}</div>
-            <div v-if="movie.hasOwnProperty('title')">Film</div>
-            <div v-else>Serie TV</div>
-            <div><img class="flag" :src="'img/flags/' + movie.original_language +'.png'" @error="genericFlag"></div>
+      <div class="container">
+        <div class="card" v-for="movie in database">
+          <img class="poster" v-if="movie.poster_path" :src="'http://image.tmdb.org/t/p/w342/' + movie.poster_path">
+          <img class="poster" v-else src="img/poster.png">
+          <div class="info">
+            <div class="title"><strong>Titolo:</strong> {{movie.title}} {{movie.name}}</div>
+            <div class="title" v-if="movie.title != movie.original_title || movie.name != movie.original_name"><strong>Titolo Originale:</strong> {{movie.original_title}} {{movie.original_name}}</div>
+            <img class="flag" :src="'img/flags/' + movie.original_language +'.png'" @error="genericFlag">
             <!-- stampo un numero di stelle piene pari al voto trasformato in numero da 0 a 5 ed un numero di stelle vuote pari a 5 meno il voto-->
             <i v-for="star in voteStar(movie.vote_average)" class="fas fa-star"></i><i v-for="star in (5 - voteStar(movie.vote_average))" class="far fa-star"></i>
-        </li>
-      </ol>
+            <div class="overview" v-if="movie.overview != ''"><strong>Descrizione:</strong> {{movie.overview}}</div>
+            <div v-else>Descrizione non disponibile</div>
+          </div>
+        </div>
+      </div>
 
     </div>
 

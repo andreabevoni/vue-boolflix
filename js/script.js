@@ -22,6 +22,13 @@
 // Mettiamo un header che contiene logo e search bar, dopo aver ricercato qualcosa nella searchbar i risultati appaiono sotto forma di “card” in cui lo sfondo è rappresentato dall’immagine di copertina.
 // Andando con il mouse sopra una card (on hover), appaiono le informazioni aggiuntive già prese nei punti precedenti più la overview.
 
+// Milestone 5 (Opzionale):
+// Partendo da un film o da una serie, richiedere all'API quali sono gli attori che fanno parte del cast aggiungendo alla nostra scheda SOLO i primi 5 restituiti dall’API con Nome e Cognome, e i generi associati al film con questo schema: “Genere 1, Genere 2, …”.
+
+// Milestone 6 (Opzionale):
+// Creare una lista di generi richiedendo quelli disponibili all'API e creare dei filtri con i generi tv e movie per mostrare/nascondere le schede ottenute con la ricerca.
+
+
 
 const databaseMovie = "https://api.themoviedb.org/3/search/movie?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
 const databaseTV = "https://api.themoviedb.org/3/search/tv?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
@@ -36,30 +43,24 @@ var app = new Vue({
   methods: {
     // funzione che fa partire le due ricerche quando l'utente clicca sul bottone, che parte solo se ha effettivamente scritto qualcosa
     startSearch: function() {
-      if (this.search != "") {
-        // azzero il database prima di aggiungere le nuove richieste
-        this.database = [];
-        this.apiCall(databaseMovie);
-        this.apiCall(databaseTV);
-      }
+      // azzero il database prima di aggiungere le nuove richieste
+      this.database = [];
+      this.apiCall(databaseMovie);
+      this.apiCall(databaseTV);
     },
-    // funzione che richiama l'API e pusha l'array risultante nel nostro database, poi ordina questo database in base alla media voto (in maniera decrescente)
+    // funzione che richiama l'API e pusha l'array risultante nel nostro database, poi ordina questo database in base alla popolaritá (in maniera decrescente)
     apiCall: function(db) {
       axios.get(`${db}&query=${this.search}`)
       .then(result => {
         this.database.push(...result.data.results);
         this.database.sort(function (a, b) {
-          return b.vote_average - a.vote_average;
+          return b.popularity - a.popularity;
         });
       });
     },
     // funzione che prende il voto di TMDB e lo ritorna sotto forma di numero da 0 a 5
     voteStar: function(vote) {
       return Math.round(vote / 2);
-    },
-    // funzione che setta un'immagine generica per i film e serie tv senza poster
-    genericMovie: function(event) {
-      event.target.src = "img/poster.png"
     },
     // funzione che setta un'immagine generica per le lingue di cui non ho scaricato la bandiera
     genericFlag: function(event) {

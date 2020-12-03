@@ -1,21 +1,88 @@
+/* regole generali */
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: 'Lato', sans-serif;
 }
 
-ol {
-  margin: 40px;
+/* regole dell'header */
+header {
+  background-color: #000000;
 }
 
-li {
-  margin-bottom: 20px;
+.padding {
+  height: 50px;
+  padding: 0 calc((100% - (352px * 4) - (40px * 3)) / 2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.yellow {
-  color: yellow;
+header .logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: red;
 }
 
-.flag {
+header input {
+  padding: 4px;
+  width: 300px;
+  border: none;
+}
+
+/* regole del contenitore con la stampa dei film */
+.container {
+  height: calc(100vh - 50px);
+  padding: 20px;
+  overflow: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #2d3339;
+}
+
+.card {
+  margin: 20px;
+  height: 523px;
+  width: 352px;
+  display: flex;
+  align-items: center;
+  background-color: #000000;
+  border: 5px solid #FFFFFF;
+}
+
+.card .info {
+  padding: 20px;
+  color: #FFFFFF;
+  display: none;
+}
+
+.card .info .title {
+  font-size: 20px;
+}
+
+.card .info .flag {
   width: 50px;
+  vertical-align: middle;
+}
+
+.card .info .fa-star {
+  color: #B8860B;
+}
+
+.card .info .overview {
+  max-height: 350px;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+/* regole hover */
+.card:hover .poster {
+  display: none;
+}
+
+.card:hover .info {
+  display: block;
 }
