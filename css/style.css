@@ -4,8 +4,8 @@
   box-sizing: border-box;
 }
 
-ul {
-  margin: 20px;
+ol, ul {
+  margin: 40px;
 }
 
 .yellow {

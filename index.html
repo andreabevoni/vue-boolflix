@@ -16,45 +16,21 @@
 
       <button @click="startSearch">Cerca</button>
 
-      <!-- output stampa dei film trovati -->
-      <div v-if="show && found">
-        <ul v-for="movie in dbMovie">
-          <li>Titolo: {{movie.title}}</li>
-          <li v-if="movie.title != movie.original_title">Titolo Originale: {{movie.original_title}}</li>
-          <li><img :src="'img/flags/' + movie.original_language +'.png'" @error="genericFlag"></li>
-
-          <!-- METODO 1 FUNZIONANTE MA SCRITTO POCO BENE -->
-          <li>
-            <!-- stampo un numero di stelle piene pari al voto trasformato in numero da 0 a 5 ed un numero di stelle vuote pari a 5 meno il voto-->
-            <i v-for="star in voteStar(movie.vote_average)" class="fas fa-star"></i><i v-for="star in (5 - voteStar(movie.vote_average))" class="far fa-star"></i>
-          </li>
-
-          <!-- METODO 1 SCRITTO BENE MA CHE GENERA LO SPAZIO VUOTO A SCHERMO -->
-          <li>
-            <!-- stampo un numero di stelle piene pari al voto trasformato in numero da 0 a 5-->
-            <i v-for="star in voteStar(movie.vote_average)" class="fas fa-star"></i>
-            <!-- stampo un numero di stelle vuote pari a 5 meno il voto -->
-            <i v-for="star in (5 - voteStar(movie.vote_average))" class="far fa-star"></i>
-          </li>
-
-          <!-- METODO 2 -->
-          <li>
-            <!-- stampo cinque stelle e ne coloro di giallo un numero pari al voto trasformato in numero da 0 a 5-->
-            <i v-for="(star, index) in 5" :class="index < voteStar(movie.vote_average) ? 'yellow' : ''" class="fas fa-star"></i>
-          </li>
-
-        </ul>
-      </div>
-
-      <!-- output quando la ricerca é inconcludente -->
-      <div v-else-if="show && !found">
-        Nessun film trovato. Prego effettuare una nuova ricerca.
-      </div>
-
-      <!-- output quando si preme il bottone ma non si ha scritto niente -->
-      <div v-else>
-        Scrivi qualcosa e premi il bottone per cercare film nel database online.
-      </div>
+      <ol>
+        <li v-for="movie in database">
+          <ul>
+            <li>Titolo: {{movie.title}} {{movie.name}}</li>
+            <li v-if="movie.title != movie.original_title || movie.name != movie.original_name">Titolo Originale: {{movie.original_title}} {{movie.name}}</li>
+            <li v-if="movie.hasOwnProperty('title')">Film</li>
+            <li v-else>Serie TV</li>
+            <li><img :src="'img/flags/' + movie.original_language +'.png'" @error="genericFlag"></li>
+            <li>
+              <!-- stampo un numero di stelle piene pari al voto trasformato in numero da 0 a 5 ed un numero di stelle vuote pari a 5 meno il voto-->
+              <i v-for="star in voteStar(movie.vote_average)" class="fas fa-star"></i><i v-for="star in (5 - voteStar(movie.vote_average))" class="far fa-star"></i>
+            </li>
+          </ul>
+        </li>
+      </ol>
 
     </div>
 

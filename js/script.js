@@ -13,40 +13,40 @@
 // Trasformiamo poi la stringa statica della lingua in una vera e propria bandiera della nazione corrispondente, gestendo il caso in cui non abbiamo la bandiera della nazione ritornata dall’API (le flag non ci sono in FontAwesome).
 // Allarghiamo poi la ricerca anche alle serie tv. Con la stessa azione di ricerca dovremo prendere sia i film che corrispondono alla query, sia le serie tv, stando attenti ad avere alla fine dei valori simili.
 
-const database = "https://api.themoviedb.org/3/search/movie?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
+const databaseMovie = "https://api.themoviedb.org/3/search/movie?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
+const databaseTV = "https://api.themoviedb.org/3/search/tv?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
 
 var app = new Vue({
   el: "#root",
   data: {
     search: "",
-    show: false,
-    found: true,
-    dbMovie: []
+    database: []
   },
   methods: {
-    // funzione per cercare sull'API i film
+    // funzione che fa partire le due ricerche quando l'utente clicca sul bottone, che parte solo se ha effettivamente scritto qualcosa
     startSearch: function() {
-      // alla pressione del bottone controllo se l'utente ha inserito una stringa per effettuare la ricerca
       if (this.search != "") {
-        axios.get(`${database}&query=${this.search}`)
-        .then(result => {
-          // controllo se l'array di ricerca é vuoto
-          if (result.data.results.length > 0) {
-            this.dbMovie = result.data.results;
-            this.found = true;
-          } else {
-            this.found = false;
-          }
-          this.show = true;
-        });
-      } else {
-        this.show = false;
+        // azzero il database prima di aggiungere le nuove richieste
+        this.database = [];
+        this.apiCall(databaseMovie);
+        this.apiCall(databaseTV);
       }
+    },
+    // funzione che richiama l'API e pusha l'array risultante nel nostro database, poi ordina questo database in base alla media voto (in maniera decrescente)
+    apiCall: function(db) {
+      axios.get(`${db}&query=${this.search}`)
+      .then(result => {
+        this.database.push(...result.data.results);
+        this.database.sort(function (a, b) {
+          return b.vote_average - a.vote_average;
+        });
+      });
     },
     // funzione che prende il voto di TMDB e lo ritorna sotto forma di numero da 0 a 5
     voteStar: function(vote) {
       return Math.round(vote / 2);
     },
+    // funzione che setta un'immagine generica per le lingue di cui non ho scaricato la bandiera
     genericFlag: function(event) {
       event.target.src = "img/flags/unknown.png"
     }
