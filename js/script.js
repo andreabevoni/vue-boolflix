@@ -13,8 +13,19 @@
 // Trasformiamo poi la stringa statica della lingua in una vera e propria bandiera della nazione corrispondente, gestendo il caso in cui non abbiamo la bandiera della nazione ritornata dall’API (le flag non ci sono in FontAwesome).
 // Allarghiamo poi la ricerca anche alle serie tv. Con la stessa azione di ricerca dovremo prendere sia i film che corrispondono alla query, sia le serie tv, stando attenti ad avere alla fine dei valori simili.
 
+// Milestone 3:
+// In questa milestone come prima cosa aggiungiamo la copertina del film o della serie al nostro elenco.
+// Dovremo prendere quindi l’URL base delle immagini di TMDB: https://image.tmdb.org/t/p/ per poi aggiungere la dimensione che vogliamo generare per poi aggiungere la parte finale dell’URL passata dall’API.
+
+// Milestone 4:
+// Trasformiamo quello che abbiamo fatto fino ad ora in una vera e propria webapp, creando un layout completo simil-Netflix.
+// Mettiamo un header che contiene logo e search bar, dopo aver ricercato qualcosa nella searchbar i risultati appaiono sotto forma di “card” in cui lo sfondo è rappresentato dall’immagine di copertina.
+// Andando con il mouse sopra una card (on hover), appaiono le informazioni aggiuntive già prese nei punti precedenti più la overview.
+
+
 const databaseMovie = "https://api.themoviedb.org/3/search/movie?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
 const databaseTV = "https://api.themoviedb.org/3/search/tv?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
+const posterLink = "http://image.tmdb.org/t/p/w342/";
 
 var app = new Vue({
   el: "#root",
@@ -45,6 +56,10 @@ var app = new Vue({
     // funzione che prende il voto di TMDB e lo ritorna sotto forma di numero da 0 a 5
     voteStar: function(vote) {
       return Math.round(vote / 2);
+    },
+    // funzione che setta un'immagine generica per i film e serie tv senza poster
+    genericMovie: function(event) {
+      event.target.src = "img/poster.png"
     },
     // funzione che setta un'immagine generica per le lingue di cui non ho scaricato la bandiera
     genericFlag: function(event) {

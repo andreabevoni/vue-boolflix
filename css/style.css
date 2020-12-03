@@ -4,14 +4,18 @@
   box-sizing: border-box;
 }
 
-ol, ul {
+ol {
   margin: 40px;
+}
+
+li {
+  margin-bottom: 20px;
 }
 
 .yellow {
   color: yellow;
 }
 
-img {
+.flag {
   width: 50px;
 }
