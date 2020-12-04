@@ -28,28 +28,57 @@
 // Milestone 6 (Opzionale):
 // Creare una lista di generi richiedendo quelli disponibili all'API e creare dei filtri con i generi tv e movie per mostrare/nascondere le schede ottenute con la ricerca.
 
-
-
 const databaseMovie = "https://api.themoviedb.org/3/search/movie?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
 const databaseTV = "https://api.themoviedb.org/3/search/tv?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
-const posterLink = "http://image.tmdb.org/t/p/w342/";
+const actorMovie = "https://api.themoviedb.org/3/movie/";
+const actorTV = "https://api.themoviedb.org/3/tv/";
+const credits = "/credits?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
+const genreMovie = "https://api.themoviedb.org/3/genre/movie/list?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
+const genreTV = "https://api.themoviedb.org/3/genre/tv/list?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
+
+// genre_ids
 
 var app = new Vue({
   el: "#root",
   data: {
     search: "",
-    database: []
+    database: [],
+    actors: [],
+    genres: [],
+    searchedIndex: 0,
+    selectedGenre: "None"
+  },
+  // cerco subito tutti i generi di film e serie tv e me li salvo nell'array adeguato
+  mounted: function () {
+    this.searchGenre(genreMovie);
+    this.searchGenre(genreTV);
   },
   methods: {
+    // funzione che cerca i generi per film e serie tv e li pusha nell'array genre, quindi ordino il database in ordine alfabetico
+    searchGenre: function(db) {
+      axios.get(db)
+      .then(result => {
+        // this.genres.push(...result.data.genres);
+        for (var i = 0; i < result.data.genres.length; i++) {
+          if (!(this.genres.some(object => object.name === result.data.genres[i].name))) {
+            this.genres.push(result.data.genres[i]);
+          }
+        }
+        // ordino il database in ordine alfabetico
+        this.genres.sort(function (a, b) {
+          return a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1;
+        });
+      });
+    },
     // funzione che fa partire le due ricerche quando l'utente clicca sul bottone, che parte solo se ha effettivamente scritto qualcosa
     startSearch: function() {
       // azzero il database prima di aggiungere le nuove richieste
       this.database = [];
-      this.apiCall(databaseMovie);
-      this.apiCall(databaseTV);
+      this.searchMovieTV(databaseMovie);
+      this.searchMovieTV(databaseTV);
     },
     // funzione che richiama l'API e pusha l'array risultante nel nostro database, poi ordina questo database in base alla popolaritá (in maniera decrescente)
-    apiCall: function(db) {
+    searchMovieTV: function(db) {
       axios.get(`${db}&query=${this.search}`)
       .then(result => {
         this.database.push(...result.data.results);
@@ -65,6 +94,23 @@ var app = new Vue({
     // funzione che setta un'immagine generica per le lingue di cui non ho scaricato la bandiera
     genericFlag: function(event) {
       event.target.src = "img/flags/unknown.png"
+    },
+    // funzione che cerca gli attori al click
+    toggleExtra: function(i) {
+      // controllo se é un film o una serie TV dalla proprietá title (presente solo nei film)
+      if (this.database[i].hasOwnProperty('title')) {
+        this.searchActor(actorMovie, this.database[i].id);
+      } else {
+        this.searchActor(actorTV, this.database[i].id);
+      }
+    },
+    // funzione che richiama l'API per cercare gli attori
+    searchActor: function(db, id) {
+      axios.get(`${db}${id}${credits}`)
+      .then(result => {
+        this.actors = result.data.cast;
+        this.searchedIndex = id;
+      });
     }
   }
 });

@@ -15,28 +15,59 @@
 
     <div id="root">
 
+      <!-- parte header con logo e input bar -->
       <header>
-        <div class="padding">
+        <div class="container">
           <span class="logo">BOOLFLIX</span>
-          <input v-model="search" @keyup="startSearch">
+          <!-- <select v-model="selectedGenre">
+            <option value="None">Filtra per genere</option>
+            <option v-for="genre in genres" :value="genre.name">{{genre.name}}</option>
+          </select> -->
+          <input v-model="search" placeholder="Scrivi qualcosa e premi Invio per iniziare una ricerca." @keyup.enter="startSearch">
         </div>
       </header>
 
-      <div class="container">
-        <div class="card" v-for="movie in database">
-          <img class="poster" v-if="movie.poster_path" :src="'http://image.tmdb.org/t/p/w342/' + movie.poster_path">
-          <img class="poster" v-else src="img/poster.png">
-          <div class="info">
-            <div class="title"><strong>Titolo:</strong> {{movie.title}} {{movie.name}}</div>
-            <div class="title" v-if="movie.title != movie.original_title || movie.name != movie.original_name"><strong>Titolo Originale:</strong> {{movie.original_title}} {{movie.original_name}}</div>
-            <img class="flag" :src="'img/flags/' + movie.original_language +'.png'" @error="genericFlag">
-            <!-- stampo un numero di stelle piene pari al voto trasformato in numero da 0 a 5 ed un numero di stelle vuote pari a 5 meno il voto-->
-            <i v-for="star in voteStar(movie.vote_average)" class="fas fa-star"></i><i v-for="star in (5 - voteStar(movie.vote_average))" class="far fa-star"></i>
-            <div class="overview" v-if="movie.overview != ''"><strong>Descrizione:</strong> {{movie.overview}}</div>
-            <div v-else>Descrizione non disponibile</div>
+      <!-- main con la stampa a video dei film trovati -->
+      <main>
+        <div class="container">
+          <div class="card" v-for="(movie, index) in database" @click="toggleExtra(index)">
+            <!-- stampa del poster se presente, altrimenti stampo una immagine generica -->
+            <img class="poster" v-if="movie.poster_path" :src="'http://image.tmdb.org/t/p/w342/' + movie.poster_path">
+            <img class="poster" v-else src="img/poster.png">
+            <!-- informazioni del film nascoste (appaiono con hover) -->
+            <div class="info">
+              <!-- stampa di titolo e di nome (sono due proprietá diverse, una per i film e una per le serie tv) -->
+              <div class="title"><strong>Titolo:</strong> {{movie.title}} {{movie.name}}</div>
+              <!-- stampo titolo/nome originale solo se diverse da quello italiano -->
+              <div class="title" v-if="movie.title != movie.original_title || movie.name != movie.original_name"><strong>Titolo Originale:</strong> {{movie.original_title}} {{movie.original_name}}</div>
+              <!-- stampo la bandiera relativa alla lingua originale, se non ho la bandiera ne stampo una generica -->
+              <img class="flag" :src="'img/flags/' + movie.original_language +'.png'" @error="genericFlag">
+              <!-- stampo un numero di stelle piene pari al voto trasformato in numero da 0 a 5 ed un numero di stelle vuote pari a 5 meno il voto-->
+              <i v-for="star in voteStar(movie.vote_average)" class="fas fa-star"></i><i v-for="star in (5 - voteStar(movie.vote_average))" class="far fa-star"></i>
+              <!-- stampo la descrizione se presente, altrimenti specifico che non é disponibile -->
+              <div class="overview" v-if="movie.overview != ''"><strong>Descrizione:</strong> {{movie.overview}}</div>
+              <div v-else>Descrizione non disponibile</div>
+              <div class="instructions">Clicca sulla scheda per ulteriori informazioni</div>
+
+              <div class="extra" v-if="database[index].id == searchedIndex">
+                ATTORI:
+                <div class="" v-for="(actor, index) in actors">
+                  <div class="" v-if="index < 5">
+                    {{actor.name}} as {{actor.character}}
+                  </div>
+                </div>
+                GENERI:
+                <div class="" v-for="genre in genres">
+                  <div class="" v-if="movie.genre_ids.includes(genre.id)">
+                    {{genre.name}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
-      </div>
+      </main>
 
     </div>
 

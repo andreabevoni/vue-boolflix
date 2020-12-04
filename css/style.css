@@ -6,15 +6,22 @@
   font-family: 'Lato', sans-serif;
 }
 
+.container {
+  height: 100%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* regole dell'header */
 header {
+  height: 50px;
   background-color: #000000;
 }
 
-.padding {
-  height: 50px;
-  padding: 0 calc((100% - (352px * 4) - (40px * 3)) / 2);
-  display: flex;
+header .container {
+  width: 1550px;
   justify-content: space-between;
   align-items: center;
 }
@@ -27,30 +34,35 @@ header .logo {
 
 header input {
   padding: 4px;
-  width: 300px;
+  width: 350px;
   border: none;
 }
 
 /* regole del contenitore con la stampa dei film */
-.container {
+main {
   height: calc(100vh - 50px);
-  padding: 20px;
-  overflow: auto;
-  scrollbar-width: none;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   background-color: #2d3339;
 }
 
+main .container {
+  padding-left: calc((100% - 1550px) / 2);
+  padding-right: calc((100% - 1550px) / 2);
+  flex-wrap: wrap;
+  justify-content: space-between;
+  overflow: auto;
+  scrollbar-width: none;
+}
+
+/* regole per le "card" che contengono le informazioni dei film trovati */
 .card {
-  margin: 20px;
-  height: 523px;
-  width: 352px;
+  height: 521px;
+  width: 350px;
+  margin-top: 50px;
   display: flex;
   align-items: center;
   background-color: #000000;
-  border: 5px solid #FFFFFF;
+  border: 4px solid #FFFFFF;
+  position: relative;
 }
 
 .card .info {
@@ -73,12 +85,31 @@ header input {
 }
 
 .card .info .overview {
-  max-height: 350px;
+  max-height: 300px;
   overflow: auto;
   scrollbar-width: thin;
 }
 
-/* regole hover */
+.card .info .instructions {
+  font-size: 12px;
+}
+
+.card .extra {
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+  color: #FFFFFF;
+  background-color: #000000;
+  /* display: none; */
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.card:hover {
+  cursor: pointer;
+}
+
 .card:hover .poster {
   display: none;
 }
@@ -86,3 +117,12 @@ header input {
 .card:hover .info {
   display: block;
 }
+/*
+.card:active .poster,
+.card:active .info {
+  display: none;
+}
+
+.card:active .extra {
+  display: block;
+} */
