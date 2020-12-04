@@ -109,7 +109,7 @@ main .container {
 }
 
 .card .page2 .title{
-  margin: 10px 0 5px;
+  margin: 20px 0 5px;
   font-weight: bold;
 }
 
@@ -131,12 +131,4 @@ main .container {
 
 .card:hover .info {
   display: block;
-}
-
-.show {
-  display: block;
-}
-
-.hide {
-  display: none;
 }

@@ -36,6 +36,7 @@
             <!-- stampa del poster se presente, altrimenti stampo una immagine generica -->
             <img class="poster" v-if="movie.poster_path" :src="'http://image.tmdb.org/t/p/w342/' + movie.poster_path">
             <img class="poster" v-else src="img/poster.png">
+            
             <!-- informazioni del film nascoste (appaiono con hover) -->
             <div class="info">
               <!-- stampa di titolo e di nome (sono due proprietá diverse, una per i film e una per le serie tv) -->
@@ -47,24 +48,32 @@
               <!-- stampo un numero di stelle piene pari al voto trasformato in numero da 0 a 5 ed un numero di stelle vuote pari a 5 meno il voto-->
               <i v-for="star in voteStar(movie.vote_average)" class="fas fa-star"></i><i v-for="star in (5 - voteStar(movie.vote_average))" class="far fa-star"></i>
               <!-- stampo la descrizione se presente, altrimenti specifico che non é disponibile -->
-              <div class="overview" v-if="movie.overview != ''"><strong>Descrizione:</strong> {{movie.overview}}</div>
-              <div v-else>Descrizione non disponibile</div>
+              <div class="overview" v-if="movie.overview != ''"><strong>Trama:</strong> {{movie.overview}}</div>
+              <div v-else>Anteprima di trama non disponibile</div>
 
-              <!-- parte con le informazioni principali -->
+              <!-- parte con le informazioni secondarie -->
               <div class="page2" v-if="filteredDB[index].id == searchedIndex">
+                <!-- stampa degli attori -->
                 <div class="title">ATTORI PRINCIPALI:</div>
-                <div class="" v-for="(actor, index) in actors">
-                  <div class="" v-if="index < 5">
-                    <span>- {{actor.name}}</span>
-                    <span v-if="actor.character != ''"> ({{actor.character}})</span>
+                <div v-if="actors.length != 0">
+                  <div class="" v-for="(actor, index) in actors">
+                    <div class="" v-if="index < 5">
+                      <span>- {{actor.name}}</span>
+                      <span v-if="actor.character != ''"> ({{actor.character}})</span>
+                    </div>
                   </div>
                 </div>
+                <div v-else>Nessuna informazione disponibile</div>
+                <!-- stampa degli generi -->
                 <div class="title">GENERI:</div>
-                <div class="" v-for="genre in genres">
-                  <div class="" v-if="movie.genre_ids.includes(genre.id)">
-                    - {{genre.name}}
+                <div v-if="movie.genre_ids.length != 0">
+                  <div class="" v-for="genre in genres">
+                    <div class="" v-if="movie.genre_ids.includes(genre.id)">
+                      - {{genre.name}}
+                    </div>
                   </div>
                 </div>
+                <div v-else>Nessuna informazione disponibile</div>
               </div>
 
               <!-- informazioni sul cambio pagina -->
