@@ -116,10 +116,10 @@ var app = new Vue({
         this.searchedIndex = 0;
       } else {
         // controllo se é un film o una serie TV dalla proprietá title (presente solo nei film)
-        if (this.database[i].hasOwnProperty('title')) {
-          this.searchActor(actorMovie, this.database[i].id);
+        if (this.filteredDB[i].hasOwnProperty('title')) {
+          this.searchActor(actorMovie, this.filteredDB[i].id);
         } else {
-          this.searchActor(actorTV, this.database[i].id);
+          this.searchActor(actorTV, this.filteredDB[i].id);
         }
       }
     },
