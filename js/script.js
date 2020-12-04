@@ -48,17 +48,31 @@ var app = new Vue({
     searchedIndex: 0,
     selectedGenre: "None"
   },
-  // cerco subito tutti i generi di film e serie tv e me li salvo nell'array adeguato
   mounted: function () {
+    // cerco subito tutti i generi di film e serie tv e me li salvo nell'array adeguato
     this.searchGenre(genreMovie);
     this.searchGenre(genreTV);
+  },
+  computed: {
+    // funzione che filtra in automatico la lista amici in base a quanto digitato nella casella di input relativa
+    filteredDB: function() {
+      if (this.selectedGenre != "None") {
+        return this.database.filter(movie => {
+          if (movie.genre_ids.includes(this.selectedGenre)) {
+            return movie;
+          }
+        });
+      } else {
+        return this.database;
+      }
+    }
   },
   methods: {
     // funzione che cerca i generi per film e serie tv e li pusha nell'array genre, quindi ordino il database in ordine alfabetico
     searchGenre: function(db) {
       axios.get(db)
       .then(result => {
-        // this.genres.push(...result.data.genres);
+        // dato che i database film e serie tv hanno dei generi in comune, devo filtrarli in modo da non ottenere duplicati
         for (var i = 0; i < result.data.genres.length; i++) {
           if (!(this.genres.some(object => object.name === result.data.genres[i].name))) {
             this.genres.push(result.data.genres[i]);
@@ -96,12 +110,17 @@ var app = new Vue({
       event.target.src = "img/flags/unknown.png"
     },
     // funzione che cerca gli attori al click
-    toggleExtra: function(i) {
-      // controllo se é un film o una serie TV dalla proprietá title (presente solo nei film)
-      if (this.database[i].hasOwnProperty('title')) {
-        this.searchActor(actorMovie, this.database[i].id);
+    changePage: function(i) {
+      // controllo se é giá aperta la pagina 2, in caso la chiudo
+      if (this.searchedIndex != 0) {
+        this.searchedIndex = 0;
       } else {
-        this.searchActor(actorTV, this.database[i].id);
+        // controllo se é un film o una serie TV dalla proprietá title (presente solo nei film)
+        if (this.database[i].hasOwnProperty('title')) {
+          this.searchActor(actorMovie, this.database[i].id);
+        } else {
+          this.searchActor(actorTV, this.database[i].id);
+        }
       }
     },
     // funzione che richiama l'API per cercare gli attori

@@ -10,7 +10,6 @@
   height: 100%;
   margin: auto;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -21,7 +20,7 @@ header {
 }
 
 header .container {
-  width: 1550px;
+  width: 1600px;
   justify-content: space-between;
   align-items: center;
 }
@@ -32,7 +31,8 @@ header .logo {
   color: red;
 }
 
-header input {
+header input,
+header select {
   padding: 4px;
   width: 350px;
   border: none;
@@ -45,10 +45,9 @@ main {
 }
 
 main .container {
-  padding-left: calc((100% - 1550px) / 2);
-  padding-right: calc((100% - 1550px) / 2);
+  padding-left: calc((100% - 1600px) / 2);
+  padding-right: calc((100% - 1600px) / 2);
   flex-wrap: wrap;
-  justify-content: space-between;
   overflow: auto;
   scrollbar-width: none;
 }
@@ -57,7 +56,7 @@ main .container {
 .card {
   height: 521px;
   width: 350px;
-  margin-top: 50px;
+  margin: 50px 25px 0;
   display: flex;
   align-items: center;
   background-color: #000000;
@@ -65,14 +64,19 @@ main .container {
   position: relative;
 }
 
+.card .poster {
+  height: 513px;
+  width: 342px;
+}
+
+.card .title {
+  font-size: 20px;
+}
+
 .card .info {
   padding: 20px;
   color: #FFFFFF;
   display: none;
-}
-
-.card .info .title {
-  font-size: 20px;
 }
 
 .card .info .flag {
@@ -90,20 +94,31 @@ main .container {
   scrollbar-width: thin;
 }
 
-.card .info .instructions {
-  font-size: 12px;
-}
-
-.card .extra {
-  height: 100%;
-  width: 100%;
+.card .info .page2 {
+  height: 513px;
+  width: 342px;
   padding: 20px;
-  color: #FFFFFF;
-  background-color: #000000;
-  /* display: none; */
   position: absolute;
   left: 0;
   top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #FFFFFF;
+  background-color: #000000;
+}
+
+.card .page2 .title{
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+
+.card .info .instructions {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-size: 12px;
 }
 
 .card:hover {
@@ -117,12 +132,11 @@ main .container {
 .card:hover .info {
   display: block;
 }
-/*
-.card:active .poster,
-.card:active .info {
-  display: none;
+
+.show {
+  display: block;
 }
 
-.card:active .extra {
-  display: block;
-} */
+.hide {
+  display: none;
+}
