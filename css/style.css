@@ -24,6 +24,10 @@ header .container {
   align-items: center;
 }
 
+header .space {
+  width: 340px;
+}
+
 header .logo {
   font-size: 24px;
   font-weight: bold;
@@ -32,13 +36,14 @@ header .logo {
 
 header input {
   padding: 4px;
-  width: 400px;
+  width: 500px;
   border: none;
 }
 
 header select {
+  margin-left: 20px;
   padding: 4px;
-  width: 200px;
+  width: 150px;
   border: none;
 }
 
@@ -148,7 +153,7 @@ main .notfound {
 
 .card .info .instructions {
   position: absolute;
-  bottom: 20px;
+  bottom: 10px;
   left: 50%;
   transform: translate(-50%, 0);
   font-size: 12px;

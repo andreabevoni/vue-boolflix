@@ -47,6 +47,7 @@ var app = new Vue({
     genres: [],
     searchedIndex: 0,
     selectedGenre: "None",
+    selectedOrder: { order: 'popularity', descending: true },
     activeSearch: false
   },
   mounted: function () {
@@ -55,17 +56,23 @@ var app = new Vue({
     this.searchGenre(genreTV);
   },
   computed: {
-    // funzione che filtra in automatico la lista amici in base a quanto digitato nella casella di input relativa
+    // funzione che filtra ed ordina in automatico la lista film in base a quanto selezionato
     filteredDB: function() {
+      // ordinamento
+      if (this.selectedOrder.descending) {
+        this.database.sort((a, b) => (a[this.selectedOrder.order] < b[this.selectedOrder.order]) ? 1 : -1)
+      } else {
+        this.database.sort((a, b) => (a[this.selectedOrder.order] > b[this.selectedOrder.order]) ? 1 : -1)
+      }
+      // filtro
       if (this.selectedGenre != "None") {
         return this.database.filter(movie => {
           if (movie.genre_ids.includes(this.selectedGenre)) {
             return movie;
           }
         });
-      } else {
-        return this.database;
       }
+      return this.database;
     }
   },
   methods: {
@@ -99,9 +106,9 @@ var app = new Vue({
         axios.get(`${db}&query=${this.search}`)
         .then(result => {
           this.database.push(...result.data.results);
-          this.database.sort(function (a, b) {
-            return b.popularity - a.popularity;
-          });
+          // this.database.sort(function (a, b) {
+          //   return b.popularity - a.popularity;
+          // });
           this.activeSearch = true;
         });
       }

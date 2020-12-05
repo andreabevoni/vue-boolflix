@@ -18,14 +18,24 @@
       <!-- parte header con logo, input bar e select per filtrare i generi -->
       <header>
         <div class="container">
-          <span class="logo">BOOLFLIX</span>
-
+          <div class="space">
+            <div class="logo">BOOLFLIX</div>
+          </div>
           <input v-model="search" placeholder="Scrivi qualcosa qui e premi Invio per iniziare una ricerca." @keyup.enter="startSearch">
-
-          <select v-model="selectedGenre">
-            <option value="None">Filtra per genere</option>
-            <option v-for="genre in genres" :value="genre.id">{{genre.name}}</option>
-          </select>
+          <div>
+            <!-- select per ordinare l'elenco di film/serie tv -->
+            <select v-model="selectedOrder">
+              <option :value="{ order: 'popularity', descending: true }">Popolarità &#8595;</option>
+              <option :value="{ order: 'popularity', descending: false }">Popolarità &#8593;</option>
+              <option :value="{ order: 'vote_average', descending: true }">Media Voto &#8595;</option>
+              <option :value="{ order: 'vote_average', descending: false }">Media Voto &#8593;</option>
+            </select>
+            <!-- select per filtrare i generi -->
+            <select v-model="selectedGenre">
+              <option value="None">Tutti i generi</option>
+              <option v-for="genre in genres" :value="genre.id">{{genre.name}}</option>
+            </select>
+          </div>
         </div>
       </header>
 
