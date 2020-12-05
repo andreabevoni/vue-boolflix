@@ -15,28 +15,37 @@
 
     <div id="root">
 
-      <!-- parte header con logo e input bar -->
+      <!-- parte header con logo, input bar e select per filtrare i generi -->
       <header>
         <div class="container">
           <span class="logo">BOOLFLIX</span>
+
+          <input v-model="search" placeholder="Scrivi qualcosa qui e premi Invio per iniziare una ricerca." @keyup.enter="startSearch">
 
           <select v-model="selectedGenre">
             <option value="None">Filtra per genere</option>
             <option v-for="genre in genres" :value="genre.id">{{genre.name}}</option>
           </select>
-
-          <input v-model="search" placeholder="Scrivi qualcosa e premi Invio per iniziare una ricerca." @keyup.enter="startSearch">
         </div>
       </header>
 
       <!-- main con la stampa a video dei film trovati -->
       <main>
         <div class="container">
+
+          <!-- se la ricerca non da risultati, stampo a video una scritta che avvisa l'utente -->
+          <div class="notfound" v-if="filteredDB.length == 0 && activeSearch">
+            <div>NESSUN RISULTATO TROVATO</div>
+          </div>
+
           <div class="card" v-for="(movie, index) in filteredDB" @click="changePage(index)" @mouseleave="searchedIndex = 0">
             <!-- stampa del poster se presente, altrimenti stampo una immagine generica -->
             <img class="poster" v-if="movie.poster_path" :src="'http://image.tmdb.org/t/p/w342/' + movie.poster_path">
-            <img class="poster" v-else src="img/poster.png">
-            
+            <div class="poster" v-else>
+              <img src="img/ciak.png">
+              <div class="title">{{movie.title}} {{movie.name}}</div>
+            </div>
+
             <!-- informazioni del film nascoste (appaiono con hover) -->
             <div class="info">
               <!-- stampa di titolo e di nome (sono due proprietá diverse, una per i film e una per le serie tv) -->
@@ -72,6 +81,12 @@
                       - {{genre.name}}
                     </div>
                   </div>
+                </div>
+                <div v-else>Nessuna informazione disponibile</div>
+                <!-- stampa della data di uscita -->
+                <div class="title">DATA DI USCITA:</div>
+                <div v-if="movie.hasOwnProperty('release_date') || movie.hasOwnProperty('first_air_date')">
+                  {{movie.release_date}} {{movie.first_air_date}}
                 </div>
                 <div v-else>Nessuna informazione disponibile</div>
               </div>

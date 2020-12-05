@@ -9,8 +9,6 @@
 .container {
   height: 100%;
   margin: auto;
-  display: flex;
-  align-items: center;
 }
 
 /* regole dell'header */
@@ -20,7 +18,8 @@ header {
 }
 
 header .container {
-  width: 1600px;
+  width: 1550px;
+  display: flex;
   justify-content: space-between;
   align-items: center;
 }
@@ -31,10 +30,15 @@ header .logo {
   color: red;
 }
 
-header input,
+header input {
+  padding: 4px;
+  width: 400px;
+  border: none;
+}
+
 header select {
   padding: 4px;
-  width: 350px;
+  width: 200px;
   border: none;
 }
 
@@ -47,9 +51,25 @@ main {
 main .container {
   padding-left: calc((100% - 1600px) / 2);
   padding-right: calc((100% - 1600px) / 2);
-  flex-wrap: wrap;
   overflow: auto;
   scrollbar-width: none;
+}
+
+main .container::after{
+  content: "";
+  display: table;
+  clear: both;
+  margin-bottom: 50px;
+}
+
+main .notfound {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 75px;
+  color: #FFFFFF;
 }
 
 /* regole per le "card" che contengono le informazioni dei film trovati */
@@ -57,16 +77,29 @@ main .container {
   height: 521px;
   width: 350px;
   margin: 50px 25px 0;
+  float: left;
   display: flex;
   align-items: center;
+  position: relative;
   background-color: #000000;
   border: 4px solid #FFFFFF;
-  position: relative;
 }
 
 .card .poster {
   height: 513px;
   width: 342px;
+  position: relative;
+}
+
+.card .poster .title {
+  text-align: center;
+  color: #FFFFFF;
+  font-size: 24px;
+  font-weight: bold;
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
 }
 
 .card .title {

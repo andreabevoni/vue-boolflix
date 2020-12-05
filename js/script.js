@@ -46,7 +46,8 @@ var app = new Vue({
     actors: [],
     genres: [],
     searchedIndex: 0,
-    selectedGenre: "None"
+    selectedGenre: "None",
+    activeSearch: false
   },
   mounted: function () {
     // cerco subito tutti i generi di film e serie tv e me li salvo nell'array adeguato
@@ -88,18 +89,22 @@ var app = new Vue({
     startSearch: function() {
       // azzero il database prima di aggiungere le nuove richieste
       this.database = [];
+      this.activeSearch = false;
       this.searchMovieTV(databaseMovie);
       this.searchMovieTV(databaseTV);
     },
     // funzione che richiama l'API e pusha l'array risultante nel nostro database, poi ordina questo database in base alla popolaritá (in maniera decrescente)
     searchMovieTV: function(db) {
-      axios.get(`${db}&query=${this.search}`)
-      .then(result => {
-        this.database.push(...result.data.results);
-        this.database.sort(function (a, b) {
-          return b.popularity - a.popularity;
+      if (this.search != "") {
+        axios.get(`${db}&query=${this.search}`)
+        .then(result => {
+          this.database.push(...result.data.results);
+          this.database.sort(function (a, b) {
+            return b.popularity - a.popularity;
+          });
+          this.activeSearch = true;
         });
-      });
+      }
     },
     // funzione che prende il voto di TMDB e lo ritorna sotto forma di numero da 0 a 5
     voteStar: function(vote) {
