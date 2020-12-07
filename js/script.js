@@ -28,26 +28,24 @@
 // Milestone 6 (Opzionale):
 // Creare una lista di generi richiedendo quelli disponibili all'API e creare dei filtri con i generi tv e movie per mostrare/nascondere le schede ottenute con la ricerca.
 
+const genreMovie = "https://api.themoviedb.org/3/genre/movie/list?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
+const genreTV = "https://api.themoviedb.org/3/genre/tv/list?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
 const databaseMovie = "https://api.themoviedb.org/3/search/movie?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
 const databaseTV = "https://api.themoviedb.org/3/search/tv?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
 const actorMovie = "https://api.themoviedb.org/3/movie/";
 const actorTV = "https://api.themoviedb.org/3/tv/";
 const credits = "/credits?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
-const genreMovie = "https://api.themoviedb.org/3/genre/movie/list?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
-const genreTV = "https://api.themoviedb.org/3/genre/tv/list?api_key=1b9a718974945696fe81f966f55c9ee4&language=it-IT";
-
-// genre_ids
 
 var app = new Vue({
   el: "#root",
   data: {
     search: "",
+    genres: [],
     database: [],
     actors: [],
-    genres: [],
-    searchedIndex: 0,
     selectedGenre: "None",
     selectedOrder: { order: 'popularity', descending: true },
+    nextpage: false,
     activeSearch: false
   },
   mounted: function () {
@@ -60,9 +58,9 @@ var app = new Vue({
     filteredDB: function() {
       // ordinamento
       if (this.selectedOrder.descending) {
-        this.database.sort((a, b) => (a[this.selectedOrder.order] < b[this.selectedOrder.order]) ? 1 : -1)
+        this.database.sort((a, b) => a[this.selectedOrder.order] < b[this.selectedOrder.order] ? 1 : -1)
       } else {
-        this.database.sort((a, b) => (a[this.selectedOrder.order] > b[this.selectedOrder.order]) ? 1 : -1)
+        this.database.sort((a, b) => a[this.selectedOrder.order] > b[this.selectedOrder.order] ? 1 : -1)
       }
       // filtro
       if (this.selectedGenre != "None") {
@@ -87,9 +85,7 @@ var app = new Vue({
           }
         }
         // ordino il database in ordine alfabetico
-        this.genres.sort(function (a, b) {
-          return a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1;
-        });
+        this.genres.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1)
       });
     },
     // funzione che fa partire le due ricerche quando l'utente clicca sul bottone, che parte solo se ha effettivamente scritto qualcosa
@@ -106,9 +102,6 @@ var app = new Vue({
         axios.get(`${db}&query=${this.search}`)
         .then(result => {
           this.database.push(...result.data.results);
-          // this.database.sort(function (a, b) {
-          //   return b.popularity - a.popularity;
-          // });
           this.activeSearch = true;
         });
       }
@@ -121,26 +114,26 @@ var app = new Vue({
     genericFlag: function(event) {
       event.target.src = "img/flags/unknown.png"
     },
-    // funzione che cerca gli attori al click
-    changePage: function(i) {
+    // funzione che cambia la pagina delle informazioni ed inserisce gli attori
+    changePage: function(index) {
       // controllo se é giá aperta la pagina 2, in caso la chiudo
-      if (this.searchedIndex != 0) {
-        this.searchedIndex = 0;
+      if (this.nextpage) {
+        this.nextpage = false;
       } else {
         // controllo se é un film o una serie TV dalla proprietá title (presente solo nei film)
-        if (this.filteredDB[i].hasOwnProperty('title')) {
-          this.searchActor(actorMovie, this.filteredDB[i].id);
+        if (this.filteredDB[index].hasOwnProperty('title')) {
+          this.searchActor(actorMovie, this.filteredDB[index].id);
         } else {
-          this.searchActor(actorTV, this.filteredDB[i].id);
+          this.searchActor(actorTV, this.filteredDB[index].id);
         }
       }
     },
-    // funzione che richiama l'API per cercare gli attori
+    // funzione che richiama l'API per cercare gli attori e che setta la proprietá nextpage (in modo da visualizzare la pagina con le informazioni secondarie)
     searchActor: function(db, id) {
       axios.get(`${db}${id}${credits}`)
       .then(result => {
         this.actors = result.data.cast;
-        this.searchedIndex = id;
+        this.nextpage = true;
       });
     }
   }

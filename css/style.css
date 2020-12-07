@@ -7,72 +7,52 @@
 }
 
 .container {
-  height: 100%;
   margin: auto;
+  display: flex;
 }
 
 /* regole dell'header */
 header {
   height: 50px;
+  padding: 0 200px;
+  justify-content: space-between;
+  align-items: center;
   background-color: #000000;
 }
 
-header .container {
-  width: 1550px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-header .space {
-  width: 340px;
-}
-
 header .logo {
+  width: 300px;
   font-size: 24px;
   font-weight: bold;
-  color: red;
+  color: #FF0000;
 }
 
-header input {
+header .whitebox {
   padding: 4px;
+  border: none;
+}
+
+header input.whitebox {
   width: 500px;
-  border: none;
 }
 
-header select {
-  margin-left: 20px;
-  padding: 4px;
+header select.whitebox {
   width: 150px;
-  border: none;
+  margin-left: 20px;
 }
 
 /* regole del contenitore con la stampa dei film */
 main {
   height: calc(100vh - 50px);
+  padding: 25px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow: auto;
   background-color: #2d3339;
 }
 
-main .container {
-  padding-left: calc((100% - 1600px) / 2);
-  padding-right: calc((100% - 1600px) / 2);
-  overflow: auto;
-  scrollbar-width: none;
-}
-
-main .container::after{
-  content: "";
-  display: table;
-  clear: both;
-  margin-bottom: 50px;
-}
-
 main .notfound {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  align-self: center;
   font-size: 75px;
   color: #FFFFFF;
 }
@@ -81,40 +61,49 @@ main .notfound {
 .card {
   height: 521px;
   width: 350px;
-  margin: 50px 25px 0;
-  float: left;
-  display: flex;
-  align-items: center;
+  margin: 25px;
   position: relative;
-  background-color: #000000;
+  color: #FFFFFF;
   border: 4px solid #FFFFFF;
 }
 
 .card .poster {
   height: 513px;
   width: 342px;
-  position: relative;
 }
 
 .card .poster .title {
-  text-align: center;
-  color: #FFFFFF;
-  font-size: 24px;
-  font-weight: bold;
   position: absolute;
   left: 50%;
   top: 60%;
   transform: translate(-50%, -50%);
-}
-
-.card .title {
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .card .info {
-  padding: 20px;
-  color: #FFFFFF;
   display: none;
+}
+
+.card .info .page {
+  height: 513px;
+  width: 342px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #000000;
+}
+
+.card .info .page.second {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.card .info .text {
+  margin-top: 10px;
+  font-size: 20px;
 }
 
 .card .info .flag {
@@ -129,26 +118,6 @@ main .notfound {
 .card .info .overview {
   max-height: 300px;
   overflow: auto;
-  scrollbar-width: thin;
-}
-
-.card .info .page2 {
-  height: 513px;
-  width: 342px;
-  padding: 20px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: #FFFFFF;
-  background-color: #000000;
-}
-
-.card .page2 .title{
-  margin: 20px 0 5px;
-  font-weight: bold;
 }
 
 .card .info .instructions {
